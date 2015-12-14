@@ -9,7 +9,7 @@ public class ClientHandler {
 	private Socket clientSocket;
 	private BufferedReader in;
 	private PrintWriter out;
-	private Thread listenThread;
+	private Thread listeningThread;
 	
 	public ClientHandler(Socket clientSocket, String userName){
 		//TODO implement
