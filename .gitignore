@@ -4,4 +4,4 @@ bin/
 # eclipse project files
 .settings/
 .classpath
-.projects
+.project
