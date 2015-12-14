@@ -21,3 +21,7 @@ Shutdown of a client from client to server
 Shutdown of server initiates from server
 
 <4>.SHUTDOWN.
+
+Message to other clients when a client change their name.
+
+<5>.<old name>.<new name>.
