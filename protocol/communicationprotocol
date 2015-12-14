@@ -1,0 +1,23 @@
+Making this file to make a description of the communicationprotocol between the server and clients.
+
+Server and client send strings between each other and first character in the string is a number followed by a ".".
+
+Reply and conformations to requests, for example if a username already is taken
+
+<0>.OK. / <0>.NOTOK / <0>.CONFIRMED
+
+Client request to set or request a name change:
+
+<1>.<New name>.
+
+Message 
+
+<2>.<Message>
+
+Shutdown of a client from client to server
+
+<3>.QUIT.
+
+Shutdown of server initiates from server
+
+<4>.SHUTDOWN.
