@@ -25,3 +25,7 @@ Shutdown of server initiates from server
 Message to other clients when a client change their name.
 
 <5>.<old name>.<new name>.
+
+Informs other clients that a user have logged off
+
+<6>.<name>.
