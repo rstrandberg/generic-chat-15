@@ -12,7 +12,7 @@ Client request to set or request a name change:
 
 Message 
 
-<2>.<Message>
+<2>.<Name>: <Message>
 
 Shutdown of a client from client to server
 
