@@ -90,7 +90,7 @@ public class Client extends Observable{
 					break;	
 			}
 			//Notification with message can be caught by an UI
-			//extending Observer.
+			//implementing Observer.
 			notifyObservers(data);
 			
 		}catch (MalformedMessageException e){
