@@ -14,7 +14,9 @@ public enum Header {
 		CLIENT_DISCONNECT("3"),
 		SERVER_SHUTDOWN("4"),
 		NAME_CHANGE_BROADCAST("5"),
-		CLIENT_DISCONNECT_BROADCAST("6");
+		CLIENT_DISCONNECT_BROADCAST("6"),
+		CLIENT_LOGON("7"),
+		CLIENT_LOGON_BROADCAST("8");
 		
 		private final String code;
 		private final static Map<String, Header> map = stream(Header.values()).collect(toMap(Header::getCode, Function.identity()));
