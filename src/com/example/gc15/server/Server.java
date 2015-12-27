@@ -2,7 +2,6 @@ package com.example.gc15.server;
 
 import java.net.*;
 import java.io.IOException;
-import java.net.*;
 
 public class Server implements Runnable {
 	
@@ -18,9 +17,13 @@ public class Server implements Runnable {
 		this.clientList = new LinkList();	
 	}
 	
-	public void initiateShutdown() {
+	public synchronized void initiateShutdown() {
+		ClientHandler current = clientList.getFirst();
+		while (current!=null) {
+			current.serverShutdown();
+			current = current.getNext();
+		}	
 		this.running = false;
-		
 	}
 	
 	/*
@@ -39,15 +42,35 @@ public class Server implements Runnable {
 	public void stop(){
 		//TODO implement
 	}
-	
-	public void handleMessage(String sender, String msg){
-		//TODO implement
-	}
-	
-	public void removeClient(String name){
-		//TODO implement
-	}
 	*/
+	
+	public synchronized void handleMessage(ClientHandler handler, String msg){
+		ClientHandler current = clientList.getFirst();
+		while (current!=null) {
+			if (current!=handler) {
+				current.send(msg);
+			}
+			current = current.getNext();
+		}
+	}
+	
+	public synchronized boolean checkName(String name) {
+		ClientHandler current = clientList.getFirst();
+		boolean changeOk = true;
+		while (current!=null) {
+			if (current.getName().equals(name)) {
+				//found a matching name and returns false
+				return false;
+			}
+			current = current.getNext();
+		}
+		//no match is found and returns an ok to change to that name
+		return changeOk;
+	}
+	
+	public synchronized void removeClient(ClientHandler handler){
+		this.clientList.removeLink(handler);
+	}
 	
 	public void run() {
 		try {
@@ -64,7 +87,7 @@ public class Server implements Runnable {
 			try {
 				Socket client = serverSocket.accept();
 				System.out.println("\nNew client accepted.\n");
-				ClientHandler handler = new ClientHandler(client);
+				ClientHandler handler = new ClientHandler(client, this);
 				clientList.insertFirst(handler);
 				Thread thread = new Thread(handler);
 				thread.start();

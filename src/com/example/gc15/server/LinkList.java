@@ -1,13 +1,15 @@
 package com.example.gc15.server;
 
-import com.example.gc15.server.ClientHandler;
-
 public class LinkList {
 	
 	private ClientHandler first;
 	
 	public LinkList() {
 		this.first = null;
+	}
+	
+	public ClientHandler getFirst() {
+		return this.first;
 	}
 	
 	public boolean isEmpty() {
@@ -18,7 +20,21 @@ public class LinkList {
 		handler.setNext(first);
 		first = handler;
 	}
-		
+	
+	public void removeLink(ClientHandler handler) {
+		//assumes list is not empty since there is a reference to an active ClientHandler
+		ClientHandler previous, current;
+		previous = first;
+		current = first;
+		while (current!=null) {
+			if (current.equals(handler)) {
+				previous = first.getNext();
+			}
+			previous = current;
+			current = current.getNext();
+		}		
+	}
+	
 	// assumes LinkList isn't empty!!!!
 	public ClientHandler deleteFirst() {
 		ClientHandler temp = first;
