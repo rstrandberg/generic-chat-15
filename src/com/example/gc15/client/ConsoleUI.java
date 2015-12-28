@@ -66,4 +66,12 @@ public class ConsoleUI implements Observer, Runnable{
 		ui.run();
 	}
 
+	/* Command format
+	 * 
+	 * 		/connect ip port
+	 * 		/setname name
+	 * 		/getname
+	 * 		/disconnect
+	 * 		/quit
+	 */
 }
