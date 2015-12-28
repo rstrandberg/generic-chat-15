@@ -107,7 +107,7 @@ public class ClientHandler implements Runnable{
 							this.setName(data);
 							this.send(Header.NAME_CHANGE_RESPONSE.getCode()+".OK");
 //							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+ oldName + " changed name to " + this.getName());
-							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+ oldName + "." + this.getName());
+							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+"."+ oldName + "." + this.getName());
 						}
 						else {
 							this.send(Header.NAME_CHANGE_REQUEST.getCode()+".NOTOK");
