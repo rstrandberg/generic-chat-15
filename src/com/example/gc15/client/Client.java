@@ -52,7 +52,7 @@ public class Client extends Observable{
 	
 	public void disconnect(boolean notifyServer) {
 		if(notifyServer)
-			send(Header.CLIENT_DISCONNECT.getCode()+".QUIT");
+			send(Header.CLIENT_DISCONNECT.getCode()+".QUIT");		
 		try{
 			connected = false;
 			in = null;
@@ -83,36 +83,40 @@ public class Client extends Observable{
 					if(Message.getData(message).equals("OK")){
 						if(!loggedOn){
 							loggedOn = true;
-//							data = "Successfully logged on as "+this.name;
+							data = "Successfully logged on as "+this.name;
+						}else{
+						data = "You are now known as "+this.name;
 						}
 					}
 					setChanged();
 					break;
 				case NAME_CHANGE_REQUEST:
-					if(Message.getData(message).equals("NOTOK"))
+					if(Message.getData(message).equals("NOTOK")){
 						this.name = this.oldName;
+						data = "Failed! Name already taken";
+					}
 					setChanged();
 					break;
 				case CHAT_MESSAGE:
-//					data = Message.getData(message);
+					data = Message.getData(message);
 					setChanged();
 					break;
 				case SERVER_SHUTDOWN:
 					disconnect(false);
-//					data = "Server shutting down";
+					data = "Server shutting down";
 					setChanged();
 					break;
 				case NAME_CHANGE_BROADCAST:
-//					String[] name = Message.getData(message).split(".");
-//					data = name[0]+" is now known as "+name[1];
+					String[] name = Message.getData(message).split("[.]");
+					data = name[0]+" is now known as "+name[1];
 					setChanged();
 					break;
 				case CLIENT_DISCONNECT_BROADCAST:
-//					data = Message.getData(message) + "logged off";
+					data = Message.getData(message) + " logged off";
 					setChanged();
 					break;
 				case CLIENT_LOGON_BROADCAST:
-//					data = Message.getData(message) + "logged on";
+					data = Message.getData(message) + " logged on";
 					setChanged();
 					break;
 				default:
@@ -121,7 +125,7 @@ public class Client extends Observable{
 			}
 			//Notification with message can be caught by an UI
 			//implementing Observer.
-			data = message;
+//			data = message;
 			notifyObservers(data);
 			
 		}catch (MalformedMessageException e){
