@@ -5,11 +5,13 @@ import java.io.IOException;
 
 public class Server implements Runnable {
 	
-	private static int PORT;
+//	private static int PORT;
+	private int PORT;
 	
 	private LinkList clientList;
 	private volatile boolean running;
-	private static ServerSocket serverSocket;
+//	private static ServerSocket serverSocket;
+	private ServerSocket serverSocket;
 	private Thread serverThread;
 
 	public Server(int port){
