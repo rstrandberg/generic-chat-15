@@ -3,9 +3,11 @@ package com.example.gc15.server;
 import java.io.*;
 import java.net.*;
 
+import com.example.gc15.message.*;
+
 public class ClientHandler implements Runnable{
 	
-	private String userName;
+	private String userName = ""; //nullpointer in checkName if not initialized
 	private Socket clientSocket;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -87,7 +89,7 @@ public class ClientHandler implements Runnable{
 						break;
 
 					default:
-						//Do nothing for non client relevant headers
+						//Do nothing if client not proper
 						break;	
 				}
 			}
@@ -104,7 +106,8 @@ public class ClientHandler implements Runnable{
 							String oldName = getName();
 							this.setName(data);
 							this.send(Header.NAME_CHANGE_RESPONSE.getCode()+".OK");
-							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+ oldName + " changed name to " + this.getName());
+//							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+ oldName + " changed name to " + this.getName());
+							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+ oldName + "." + this.getName());
 						}
 						else {
 							this.send(Header.NAME_CHANGE_REQUEST.getCode()+".NOTOK");
@@ -120,7 +123,7 @@ public class ClientHandler implements Runnable{
 						this.server.removeClient(this);					
 						break;			
 					default:
-						//Do nothing for non client relevant headers
+						//Do nothing for non server relevant headers
 						break;	
 			
 				}
