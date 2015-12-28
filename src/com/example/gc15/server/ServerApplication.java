@@ -18,7 +18,9 @@ public class ServerApplication {
 		
 		console = new ConsoleListener(server, input);
 		Thread conThread = new Thread(console);
-		conThread.start();	
+		conThread.start();
+		Thread servThread = new Thread(server);
+		servThread.start();
 			
 	}
 	
