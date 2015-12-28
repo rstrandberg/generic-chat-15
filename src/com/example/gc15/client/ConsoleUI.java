@@ -19,6 +19,7 @@ public class ConsoleUI implements Observer, Runnable{
 	private void parseCommand(String[] arg){
 		switch (arg[0]){
 			case "/quit":
+				client.disconnect(true);
 				running = false;
 				break;
 			case "/connect":
