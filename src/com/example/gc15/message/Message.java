@@ -12,7 +12,7 @@ public class Message {
 		return h;
 	}
 	public static String getData(String message){
-		return message.substring(message.indexOf('.'), message.length());
+		return message.substring(message.indexOf('.')+1, message.length());
 	}
 
 }
