@@ -26,6 +26,12 @@ public class Server implements Runnable {
 			current = current.getNext();
 		}	
 		this.running = false;
+		
+		try {
+			serverSocket.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/*
@@ -78,6 +84,7 @@ public class Server implements Runnable {
 		try {
 			serverSocket = new ServerSocket(PORT);
 			running = true;
+			System.out.println("\nServer thread running!");
 		}
 		catch (IOException ioEx) {
 			System.out.println("\nUnable to set up port!");
@@ -95,7 +102,7 @@ public class Server implements Runnable {
 				thread.start();
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			}
 
 		} while(running);
