@@ -3,7 +3,7 @@ package com.example.gc15.message;
 public class Message {
 	
 	public static Header getHeader(String message)throws MalformedMessageException{
-		int index = message.indexOf('.');
+		int index = (message == null) ? -1 : message.indexOf('.');
 		if(index == -1)
 			throw new MalformedMessageException("Missing header");
 		Header h  = Header.fromCode(message.substring(0, index));
