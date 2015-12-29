@@ -39,10 +39,10 @@ public class LinkList {
 		}		
 	}
 	
-	// assumes LinkList isn't empty!!!!
 	public ClientHandler deleteFirst() {
 		ClientHandler temp = first;
-		first = first.getNext();
+		if(first != null)
+			first = first.getNext();
 		return temp;
 	}
 	
