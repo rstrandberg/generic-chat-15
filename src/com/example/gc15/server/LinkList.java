@@ -34,7 +34,7 @@ public class LinkList {
 					previous.setNext(current.getNext());
 				break;
 			}
-			previous = previous.getNext();
+			previous = current;
 			current = current.getNext();
 		}		
 	}
