@@ -28,7 +28,11 @@ public class LinkList {
 		current = first;
 		while (current!=null) {
 			if (current.equals(handler)) {
-				previous = first.getNext();
+				if(current.equals(first))
+					first = first.getNext();
+				else
+					previous.setNext(current.getNext());
+				break;
 			}
 			previous = current;
 			current = current.getNext();
