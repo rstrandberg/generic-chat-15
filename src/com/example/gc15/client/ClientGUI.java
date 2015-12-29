@@ -26,7 +26,7 @@ public class ClientGUI implements Observer{
 	private JTextField hostInput;
 	private JTextField portInput;
 	
-	private JPanel mainPanel;
+//	private JPanel mainPanel;
 	private JPanel topPanel;
 	
 	private ActionListener buttonListener;
@@ -43,8 +43,9 @@ public class ClientGUI implements Observer{
 		chatFrame.setTitle("Generic Chat 15");
 		chatFrame.setResizable(false);
 		chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainPanel = constructMainPanel();
-		chatFrame.add(mainPanel);
+//		mainPanel = constructMainPanel();
+//		chatFrame.add(mainPanel);
+		chatFrame.add(constructMainPanel());
 		chatFrame.pack();
 		createButtonListener();
 		createSendAction();
