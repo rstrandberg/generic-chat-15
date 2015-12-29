@@ -145,6 +145,8 @@ public class ClientGUI implements Observer{
 						int port = Integer.parseInt(portInput.getText());
 						if(client.connect(host, port)){
 							((CardLayout)topPanel.getLayout()).show(topPanel, "name");
+						}else{
+							chatArea.append("Unable to connect to host\n");
 						}
 						break;
 					case "disconnect":

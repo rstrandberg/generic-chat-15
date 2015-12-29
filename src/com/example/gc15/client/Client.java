@@ -40,7 +40,7 @@ public class Client extends Observable{
 			out = new PrintWriter(socket.getOutputStream());
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		}catch (IOException e){
-			System.out.println(e+" : connect");
+			System.out.println(e);
 			return false;
 		}
 		loggedOn = false;
@@ -51,15 +51,17 @@ public class Client extends Observable{
 	}
 	
 	public void disconnect(boolean notifyServer) {
-		if(notifyServer)
-			send(Header.CLIENT_DISCONNECT.getCode()+".QUIT");	
-		try{
-			connected = false;
-			in = null;
-			out = null;
-			socket.close();
-		}catch (IOException e){
-			System.out.println(e+" : disconnect");
+		if(!connected){
+			if(notifyServer)
+				send(Header.CLIENT_DISCONNECT.getCode()+".QUIT");	
+			try{
+				connected = false;
+				in = null;
+				out = null;
+				socket.close();
+			}catch (IOException e){
+				System.out.println(e+" : disconnect");
+			}
 		}
 	}
 	
@@ -121,17 +123,12 @@ public class Client extends Observable{
 					setChanged();
 					break;
 				default:
-					//Do nothing for non client relevant headers
 					break;	
 			}
-			//Notification with message can be caught by an UI
-			//implementing Observer.
-//			data = message;
 			notifyObservers(data);
 			
 		}catch (MalformedMessageException e){
-			//Silently drop messages with missing or unknown header
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	
@@ -146,7 +143,9 @@ public class Client extends Observable{
 				}
 			}catch (IOException e){
 				System.out.println(e+" : ListeningThread");
-			}	
+			}
+			loggedOn = false;
+			connected = false;
 			System.out.println("Client listening thread died");
 		}
 	}
