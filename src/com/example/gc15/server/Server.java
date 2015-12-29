@@ -78,6 +78,7 @@ public class Server implements Runnable {
 	
 	public synchronized void removeClient(ClientHandler handler){
 		this.clientList.removeLink(handler);
+		System.out.println("Client removed: "+handler.getName());
 	}
 	
 	public void run() {

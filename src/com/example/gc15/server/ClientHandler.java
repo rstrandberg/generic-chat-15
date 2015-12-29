@@ -87,14 +87,19 @@ public class ClientHandler implements Runnable{
 							this.send(Header.NAME_CHANGE_REQUEST.getCode()+".NOTOK");
 						}						
 						break;
-
+					//allow the client to disconnect without being logged on.
+					case CLIENT_DISCONNECT:
+						this.connected = false;
+//						this.server.handleMessage(this, Header.CLIENT_DISCONNECT_BROADCAST.getCode() + "." + this.getName());
+//						this.server.removeClient(this);					
+						break;
 					default:
 						//Do nothing if client not proper
 						break;	
 				}
 			}
 			else {		
-				
+//				System.out.println(message);
 				switch(Message.getHeader(message)){
 					case NAME_CHANGE_REQUEST:
 						data = Message.getData(message);
@@ -115,12 +120,12 @@ public class ClientHandler implements Runnable{
 						break;
 					case CHAT_MESSAGE:
 						data = Message.getData(message);
-						this.server.handleMessage(this, Header.CHAT_MESSAGE.getCode() + "." + this.getName() + " " + data);			
+						this.server.handleMessage(this, Header.CHAT_MESSAGE.getCode() + "." + this.getName() + ": " + data);			
 						break;					
 					case CLIENT_DISCONNECT:
-						//data = this.getName() + " is logged off";
+						this.connected = false;
 						this.server.handleMessage(this, Header.CLIENT_DISCONNECT_BROADCAST.getCode() + "." + this.getName());
-						this.server.removeClient(this);					
+//						this.server.removeClient(this);					
 						break;			
 					default:
 						//Do nothing for non server relevant headers
@@ -138,16 +143,25 @@ public class ClientHandler implements Runnable{
 	
 	public void run() {
 		
-		String msg;
+		String msg ="";
 		try {
-			while(connected){
+			//need to check for msg being null as readLine() will return null
+			//when the socket and associated steams was closed from the other side.
+			while(connected && msg != null){
 				msg = in.readLine();
 				this.handleMessage(msg);		
 			}
 		}
 		catch(IOException ioEx) {
-			System.out.println("Unable to disconnect!");
+			System.out.println(ioEx);
+//			System.out.println("Unable to disconnect!");
 		}
+		finally{
+			//ensures that the clientHandler is removed along with the tread dying.
+			//Might want to close clientSocket here too.
+			this.server.removeClient(this);	
+		}
+		System.out.println("ClientHandler thread died: "+this.getName());
 	
 	}
 	

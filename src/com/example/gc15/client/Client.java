@@ -52,7 +52,7 @@ public class Client extends Observable{
 	
 	public void disconnect(boolean notifyServer) {
 		if(notifyServer)
-			send(Header.CLIENT_DISCONNECT.getCode()+".QUIT");		
+			send(Header.CLIENT_DISCONNECT.getCode()+".QUIT");	
 		try{
 			connected = false;
 			in = null;
@@ -137,15 +137,16 @@ public class Client extends Observable{
 	private class ListeningThread implements Runnable{
 		@Override
 		public void run() {
-			String msg;
+			String msg = "";
 			try{
-				while(connected){
+				while(connected && msg != null){
 					msg = in.readLine();
 					handleMessage(msg);		
 				}
 			}catch (IOException e){
 				System.out.println(e+" : ListeningThread");
-			}		
+			}	
+			System.out.println("Client listening thread died");
 		}
 	}
 
