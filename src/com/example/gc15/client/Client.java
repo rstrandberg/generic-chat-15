@@ -72,7 +72,8 @@ public class Client extends Observable{
 		out.flush();
 	}
 	public void sendChatMessage(String msg){
-		send(Header.CHAT_MESSAGE.getCode()+"."+msg);
+		if(connected)
+			send(Header.CHAT_MESSAGE.getCode()+"."+msg);
 	}
 	
 	private void handleMessage(String message){
