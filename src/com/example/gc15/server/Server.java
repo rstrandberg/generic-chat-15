@@ -5,17 +5,14 @@ import java.io.IOException;
 
 public class Server implements Runnable {
 	
-//	private static int PORT;
-	private int PORT;
+	private final int port;
 	
 	private LinkList clientList;
 	private volatile boolean running;
-//	private static ServerSocket serverSocket;
 	private ServerSocket serverSocket;
-	private Thread serverThread;
 
 	public Server(int port){
-		this.PORT = port;
+		this.port = port;
 		this.clientList = new LinkList();	
 	}
 	
@@ -33,24 +30,6 @@ public class Server implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	/*
-	public void setPort(int port){
-		//TODO implement
-	}
-	
-	public void sendToAll(String msg){
-		//TODO implement
-	}
-	
-	public void start(){
-		//TODO implement
-	}
-	
-	public void stop(){
-		//TODO implement
-	}
-	*/
 	
 	public synchronized void handleMessage(ClientHandler handler, String msg){
 		ClientHandler current = clientList.getFirst();
@@ -81,14 +60,13 @@ public class Server implements Runnable {
 		System.out.println("Client removed: "+handler.getName());
 	}
 	
-	//added for testing purposes
 	public synchronized void displayUsers(){
 		this.clientList.displayList();
 	}
 	
 	public void run() {
 		try {
-			serverSocket = new ServerSocket(PORT);
+			serverSocket = new ServerSocket(port);
 			running = true;
 			System.out.println("\nServer thread running!");
 		}

@@ -7,7 +7,7 @@ import com.example.gc15.message.*;
 
 public class ClientHandler implements Runnable{
 	
-	private String userName = ""; //nullpointer in checkName if not initialized
+	private String userName = "";
 	private Socket clientSocket;
 	private BufferedReader in;
 	private PrintWriter out;
@@ -62,7 +62,6 @@ public class ClientHandler implements Runnable{
 			this.connected = false;
 			this.clientSocket.close();
 			this.server.removeClient(this);
-		
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -87,31 +86,24 @@ public class ClientHandler implements Runnable{
 							this.send(Header.NAME_CHANGE_REQUEST.getCode()+".NOTOK");
 						}						
 						break;
-					//allow the client to disconnect without being logged on.
 					case CLIENT_DISCONNECT:
-						this.connected = false;
-//						this.server.handleMessage(this, Header.CLIENT_DISCONNECT_BROADCAST.getCode() + "." + this.getName());
-//						this.server.removeClient(this);					
+						this.connected = false;				
 						break;
 					default:
-						//Do nothing if client not proper
 						break;	
 				}
 			}
 			else {		
-//				System.out.println(message);
 				switch(Message.getHeader(message)){
 					case NAME_CHANGE_REQUEST:
 						data = Message.getData(message);
 						//receives a request to change or set username, check the used names and if its AN ok username is set and an NAME_CHANGE_REQUEST OK 
 						//is sent back and its broadcasted that a certan username is changed to another
-						//if name is already used a NAME_CHANGE_REQUEST NOTOK is sent back and client have to try finding another name
-						
+						//if name is already used a NAME_CHANGE_REQUEST NOTOK is sent back and client have to try finding another name					
 						if (server.checkName(data)) {
 							String oldName = getName();
 							this.setName(data);
 							this.send(Header.NAME_CHANGE_RESPONSE.getCode()+".OK");
-//							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+ oldName + " changed name to " + this.getName());
 							this.server.handleMessage(this, Header.NAME_CHANGE_BROADCAST.getCode()+"."+ oldName + "." + this.getName());
 						}
 						else {
@@ -124,19 +116,16 @@ public class ClientHandler implements Runnable{
 						break;					
 					case CLIENT_DISCONNECT:
 						this.connected = false;
-						this.server.handleMessage(this, Header.CLIENT_DISCONNECT_BROADCAST.getCode() + "." + this.getName());
-//						this.server.removeClient(this);					
+						this.server.handleMessage(this, Header.CLIENT_DISCONNECT_BROADCAST.getCode() + "." + this.getName());				
 						break;			
 					default:
-						//Do nothing for non server relevant headers
 						break;	
 			
 				}
 			}
 		}
 		catch (MalformedMessageException e){
-			//Silently drop messages with missing or unknown header
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	
@@ -145,8 +134,6 @@ public class ClientHandler implements Runnable{
 		
 		String msg ="";
 		try {
-			//need to check for msg being null as readLine() will return null
-			//when the socket and associated steams was closed from the other side.
 			while(connected && msg != null){
 				msg = in.readLine();
 				this.handleMessage(msg);		
@@ -154,12 +141,14 @@ public class ClientHandler implements Runnable{
 		}
 		catch(IOException ioEx) {
 			System.out.println(ioEx);
-//			System.out.println("Unable to disconnect!");
 		}
 		finally{
-			//ensures that the clientHandler is removed along with the tread dying.
-			//Might want to close clientSocket here too.
 			this.server.removeClient(this);	
+			try {
+				this.clientSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		System.out.println("ClientHandler thread died: "+this.getName());
 	
