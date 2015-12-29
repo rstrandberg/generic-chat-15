@@ -32,6 +32,8 @@ public class ConsoleListener implements Runnable {
 	            if(read.equals("exit")) {
 	                checkLoop = true;
 	                server.initiateShutdown();
+	            }else if(read.equals("users")){ //added for testing purposes
+	            	server.displayUsers();
 	            }
 	            Thread.sleep(500);
     		}

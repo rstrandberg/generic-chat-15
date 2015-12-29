@@ -81,6 +81,11 @@ public class Server implements Runnable {
 		System.out.println("Client removed: "+handler.getName());
 	}
 	
+	//added for testing purposes
+	public synchronized void displayUsers(){
+		this.clientList.displayList();
+	}
+	
 	public void run() {
 		try {
 			serverSocket = new ServerSocket(PORT);
