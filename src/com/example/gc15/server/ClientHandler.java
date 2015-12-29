@@ -36,7 +36,7 @@ public class ClientHandler implements Runnable{
 	}
 	
 	public void display() {
-		System.out.print("This thread handles communication with " + this.userName);
+		System.out.println("This thread handles communication with " + this.userName);
 	}
 	
 	public String getName() {
