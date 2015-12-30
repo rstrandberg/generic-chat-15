@@ -148,9 +148,9 @@ public class Client extends Observable{
 				}
 			}catch (IOException e){
 				System.out.println(e+" : ListeningThread");
+			}finally{
+				disconnect(false);
 			}
-			loggedOn = false;
-			connected = false;
 			System.out.println("Client listening thread died");
 		}
 	}
