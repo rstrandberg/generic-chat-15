@@ -35,23 +35,28 @@ public class Client extends Observable{
 	}
 	
 	public boolean connect(String host, int port){
-		try{
-			socket = new Socket(host, port);
-			out = new PrintWriter(socket.getOutputStream());
-			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		}catch (IOException e){
-			System.out.println(e);
+		if(!connected){
+			try{
+				socket = new Socket(host, port);
+				out = new PrintWriter(socket.getOutputStream());
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			}catch (IOException e){
+				System.out.println(e);
+				return false;
+			}
+			loggedOn = false;
+			connected = true;
+			listeningThread = new Thread(new ListeningThread());
+			listeningThread.start();
+			return true;
+		}
+		else{
 			return false;
 		}
-		loggedOn = false;
-		connected = true;
-		listeningThread = new Thread(new ListeningThread());
-		listeningThread.start();
-		return true;
 	}
 	
 	public void disconnect(boolean notifyServer) {
-		if(!connected){
+		if(connected){
 			if(notifyServer)
 				send(Header.CLIENT_DISCONNECT.getCode()+".QUIT");	
 			try{
